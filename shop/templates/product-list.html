@@ -1,0 +1,450 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load shop_helper %}
+
+{% block main %}
+<style>
+    /* List View (Siyahı görünüşü) üçün stillər */
+    .products-wrapper.view-grid .product-desc {
+        display: none !important;
+    }
+
+    .products-wrapper.view-list .product-col {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .products-wrapper.view-list .product-item {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: stretch !important;
+        text-align: left !important;
+        margin-bottom: 24px !important;
+    }
+
+    .products-wrapper.view-list .product-img {
+        width: 250px !important;
+        min-width: 250px !important;
+        max-width: 250px !important;
+        height: 220px !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .products-wrapper.view-list .product-img img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    .products-wrapper.view-list .product-content {
+        flex: 1 !important;
+        padding: 20px 25px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        text-align: left !important;
+    }
+
+    .products-wrapper.view-list .product-content a.product-title {
+        font-size: 1.15rem !important;
+        font-weight: 600 !important;
+        margin-bottom: 6px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .products-wrapper.view-list .price-wrapper,
+    .products-wrapper.view-list .rating-stars {
+        justify-content: flex-start !important;
+    }
+
+    .products-wrapper.view-list .product-desc {
+        display: block !important;
+        color: #6c757d;
+        margin: 10px 0 0 0 !important;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Düymələrin aktiv vəziyyəti */
+    #gridViewBtn.active,
+    #listViewBtn.active {
+        background-color: #FFD333 !important;
+        color: #111111 !important;
+        border-color: #FFD333 !important;
+    }
+
+    /* Səhifələmə (Pagination) Stilləri */
+    .pagination {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+    }
+
+    .pagination .page-item {
+        margin: 0 3px !important;
+    }
+
+    .pagination .page-item .page-link {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        padding: 6px 14px !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #3D464D !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 4px !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #FFD333 !important;
+        color: #111111 !important;
+        border-color: #FFD333 !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 6px rgba(255, 211, 51, 0.4) !important;
+    }
+
+    .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #FFD333 !important;
+        color: #111111 !important;
+        border-color: #FFD333 !important;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #adb5bd !important;
+        background-color: #f8f9fa !important;
+        border-color: #dee2e6 !important;
+        cursor: not-allowed !important;
+        opacity: 0.7 !important;
+    }
+
+    /* Gecə Rejimində Səhifələmə (Dark Mode) */
+    html.dark-theme .pagination .page-item .page-link,
+    body.dark-theme .pagination .page-item .page-link {
+        background-color: #1e2229 !important;
+        color: #ffffff !important;
+        border-color: #2d3238 !important;
+    }
+
+    html.dark-theme .pagination .page-item.active .page-link,
+    body.dark-theme .pagination .page-item.active .page-link {
+        background-color: #FFD333 !important;
+        color: #111111 !important;
+        border-color: #FFD333 !important;
+    }
+
+    html.dark-theme .pagination .page-item.disabled .page-link,
+    body.dark-theme .pagination .page-item.disabled .page-link {
+        background-color: #15181d !important;
+        color: #6c757d !important;
+        border-color: #2d3238 !important;
+    }
+
+    html.dark-theme .pagination .page-item:not(.active):not(.disabled) .page-link:hover,
+    body.dark-theme .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #FFD333 !important;
+        color: #111111 !important;
+        border-color: #FFD333 !important;
+    }
+
+    @media (max-width: 576px) {
+        .products-wrapper.view-list .product-item {
+            flex-direction: column !important;
+        }
+        .products-wrapper.view-list .product-img {
+            width: 100% !important;
+            min-width: 100% !important;
+            max-width: 100% !important;
+            height: 200px !important;
+        }
+        .pagination .page-item .page-link {
+            min-width: 34px !important;
+            height: 34px !important;
+            padding: 4px 10px !important;
+            font-size: 13px !important;
+        }
+    }
+</style>
+
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <a class="breadcrumb-item text-dark" href="{% url 'shop:home' %}">Home</a>
+                    <a class="breadcrumb-item text-dark" href="{% url 'shop:product-list' %}">Shop</a>
+                    <span class="breadcrumb-item active">Shop List</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <div class="col-lg-3 col-md-4">
+                <!-- Categories Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by Category</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <a href="?{% query_transform category=None page=1 %}" class="text-dark {% if not selected_category %}font-weight-bold text-primary{% endif %}">
+                            All Categories
+                        </a>
+                    </div>
+                    {% for category in categories %}
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <a href="?{% query_transform category=category.id page=1 %}" class="text-dark {% if selected_category == category.id %}font-weight-bold text-primary{% endif %}">
+                            {{ category.title }}
+                        </a>
+                        <span class="badge border font-weight-normal">{{ category.product_count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Categories End -->
+
+                <!-- Price Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" checked id="price-all">
+                            <label class="custom-control-label" for="price-all">All Price</label>
+                            <span class="badge border font-weight-normal">1000</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-1">
+                            <label class="custom-control-label" for="price-1">{{ currency_symbol }}{{ 0|convert:currency_rate|floatformat:0 }} - {{ currency_symbol }}{{ 100|convert:currency_rate|floatformat:0 }}</label>
+                            <span class="badge border font-weight-normal">150</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-2">
+                            <label class="custom-control-label" for="price-2">{{ currency_symbol }}{{ 100|convert:currency_rate|floatformat:0 }} - {{ currency_symbol }}{{ 200|convert:currency_rate|floatformat:0 }}</label>
+                            <span class="badge border font-weight-normal">295</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-3">
+                            <label class="custom-control-label" for="price-3">{{ currency_symbol }}{{ 200|convert:currency_rate|floatformat:0 }} - {{ currency_symbol }}{{ 300|convert:currency_rate|floatformat:0 }}</label>
+                            <span class="badge border font-weight-normal">246</span>
+                        </div>
+                    </form>
+                </div>
+                <!-- Price End -->
+                
+                <!-- Color Start -->
+                {% if colors %}
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        {% for color in colors %}
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="color-{{ color.id }}">
+                            <label class="custom-control-label" for="color-{{ color.id }}">{{ color.title }}</label>
+                        </div>
+                        {% endfor %}
+                    </form>
+                </div>
+                {% endif %}
+                <!-- Color End -->
+
+                <!-- Size Start -->
+                {% if sizes %}
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by size</span></h5>
+                <div class="bg-light p-4 mb-30">
+                    <form>
+                        {% for size in sizes %}
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="size-{{ size.id }}">
+                            <label class="custom-control-label" for="size-{{ size.id }}">{{ size.title }}</label>
+                        </div>
+                        {% endfor %}
+                    </form>
+                </div>
+                {% endif %}
+                <!-- Size End -->
+            </div>
+            <!-- Shop Sidebar End -->
+
+
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-8">
+                <!-- Toolbar Start -->
+                <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <!-- Left: Grid / List view toggle buttons -->
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-sm btn-light {% if view_mode == 'grid' %}active{% endif %}" id="gridViewBtn" onclick="setProductView('grid')" title="Grid View">
+                                    <i class="fa fa-th-large"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-light ml-2 {% if view_mode == 'list' %}active{% endif %}" id="listViewBtn" onclick="setProductView('list')" title="List View">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <span class="text-muted ml-3 d-none d-md-inline" style="font-size: 14px;">
+                                    {% if paginator.count > 0 %}
+                                        Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} products
+                                    {% else %}
+                                        No products
+                                    {% endif %}
+                                </span>
+                                {% if query %}
+                                    <span class="badge badge-info ml-2">Search: "{{ query }}"</span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Right: Sorting & Showing dropdowns -->
+                            <div class="ml-2 d-flex align-items-center">
+                                <!-- Sorting Dropdown -->
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                                        Sorting: {{ sort_label }}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        {% for key, opt in sort_options.items %}
+                                        <a class="dropdown-item {% if sort_key == key %}active font-weight-bold text-primary{% endif %}" href="?{% query_transform sort=key page=1 %}">
+                                            {{ opt.label }}
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Showing Dropdown -->
+                                <div class="btn-group ml-2">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                                        Showing: {{ showing }}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        {% for num in showing_choices %}
+                                        <a class="dropdown-item {% if showing == num %}active font-weight-bold text-primary{% endif %}" href="?{% query_transform showing=num page=1 %}">
+                                            {{ num }}
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Grid / List Container -->
+                    <div class="col-12">
+                        <div class="row products-wrapper {% if view_mode == 'list' %}view-list{% else %}view-grid{% endif %}" id="productsContainer">
+                            {% for product in products %}
+                                {% include 'includes/product-cart.html' with product=product col_class='col-lg-4 col-md-6 col-sm-6 pb-1' %}
+                            {% empty %}
+                                <div class="col-12 text-center py-5">
+                                    <h4 class="text-muted mb-3">No products found</h4>
+                                    <p class="text-muted">There are no products matching your criteria.</p>
+                                    <a href="{% url 'shop:product-list' %}" class="btn btn-primary mt-2">View All Products</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Pagination Start -->
+                    <div class="col-12 mt-4">
+                        <nav aria-label="Product navigation">
+                            <ul class="pagination justify-content-center">
+                                <!-- Previous Button -->
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% query_transform page=page_obj.previous_page_number %}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span> Previous
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link"><span aria-hidden="true">&laquo;</span> Previous</span>
+                                    </li>
+                                {% endif %}
+
+                                <!-- Page Numbers -->
+                                {% for num in page_range %}
+                                    {% if num == paginator.ELLIPSIS %}
+                                        <li class="page-item disabled">
+                                            <span class="page-link">…</span>
+                                        </li>
+                                    {% elif page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?{% query_transform page=num %}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- Next Button -->
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?{% query_transform page=page_obj.next_page_number %}" aria-label="Next">
+                                            Next <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next <span aria-hidden="true">&raquo;</span></span>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Pagination End -->
+                </div>
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+    <!-- Shop End -->
+
+<script>
+    function setProductView(view) {
+        var container = document.getElementById('productsContainer');
+        var gridBtn = document.getElementById('gridViewBtn');
+        var listBtn = document.getElementById('listViewBtn');
+
+        if (!container) return;
+
+        if (view === 'list') {
+            container.classList.remove('view-grid');
+            container.classList.add('view-list');
+            if (gridBtn) gridBtn.classList.remove('active');
+            if (listBtn) listBtn.classList.add('active');
+        } else {
+            container.classList.remove('view-list');
+            container.classList.add('view-grid');
+            if (gridBtn) gridBtn.classList.add('active');
+            if (listBtn) listBtn.classList.remove('active');
+        }
+
+        try {
+            localStorage.setItem('shop_view_mode', view);
+        } catch(e) {}
+    }
+
+    // Yadda saxlanmış görünüş seçimini tətbiq et (URL-də view parametri yoxdursa)
+    (function() {
+        try {
+            var urlParams = new URLSearchParams(window.location.search);
+            if (!urlParams.has('view')) {
+                var saved = localStorage.getItem('shop_view_mode');
+                if (saved === 'list' || saved === 'grid') {
+                    setProductView(saved);
+                }
+            }
+        } catch(e) {}
+    })();
+</script>
+{% endblock main %}

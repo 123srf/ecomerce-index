@@ -1,0 +1,622 @@
+{% load static %}
+{% load shop_helper %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>MultiShop - Online Shop Website</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'scss/style.css' %}" rel="stylesheet">
+
+    <!-- Light / Dark Theme CSS -->
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet">
+
+    <!-- Gecə / Gündüz Rejimi üçün Birbaşa Stillər -->
+    <style id="darkThemeStyles">
+        /* Baza və səhifə gövdəsi */
+        html.dark-theme,
+        body.dark-theme,
+        html.dark-theme body {
+            background-color: #121417 !important;
+            color: #dee2e6 !important;
+        }
+
+        /* Bütün başlıqlar */
+        html.dark-theme h1,
+        html.dark-theme h2,
+        html.dark-theme h3,
+        html.dark-theme h4,
+        html.dark-theme h5,
+        html.dark-theme h6,
+        body.dark-theme h1,
+        body.dark-theme h2,
+        body.dark-theme h3,
+        body.dark-theme h4,
+        body.dark-theme h5,
+        body.dark-theme h6 {
+            color: #ffffff !important;
+        }
+
+        /* Bölmə başlıqları */
+        html.dark-theme .section-title::after,
+        body.dark-theme .section-title::after {
+            border-top: 1px dashed #343a40 !important;
+        }
+        html.dark-theme .section-title span,
+        body.dark-theme .section-title span {
+            background-color: #121417 !important;
+            color: #ffffff !important;
+        }
+
+        /* Bootstrap fon sinifləri */
+        html.dark-theme .bg-light,
+        body.dark-theme .bg-light,
+        html.dark-theme .bg-white,
+        body.dark-theme .bg-white {
+            background-color: #1e2229 !important;
+        }
+
+        html.dark-theme .bg-secondary,
+        body.dark-theme .bg-secondary {
+            background-color: #272c34 !important;
+        }
+
+        html.dark-theme .bg-dark,
+        body.dark-theme .bg-dark {
+            background-color: #0b0d10 !important;
+        }
+
+        /* Mətn rəngləri */
+        html.dark-theme .text-dark,
+        body.dark-theme .text-dark {
+            color: #ffffff !important;
+        }
+        html.dark-theme a.text-dark:hover,
+        body.dark-theme a.text-dark:hover {
+            color: #FFD333 !important;
+        }
+        html.dark-theme .text-body,
+        body.dark-theme .text-body,
+        html.dark-theme .text-muted,
+        body.dark-theme .text-muted {
+            color: #9aa0a6 !important;
+        }
+        html.dark-theme .text-secondary,
+        body.dark-theme .text-secondary {
+            color: #c0c6cc !important;
+        }
+        html.dark-theme .bg-primary .text-dark,
+        body.dark-theme .bg-primary .text-dark {
+            color: #111111 !important;
+        }
+
+        /* Məhsul və Kateqoriya kartları */
+        html.dark-theme .product-item,
+        body.dark-theme .product-item,
+        html.dark-theme .cat-item,
+        body.dark-theme .cat-item {
+            background-color: #1e2229 !important;
+            border: 1px solid #2d3238 !important;
+        }
+        html.dark-theme .product-item .text-center,
+        body.dark-theme .product-item .text-center {
+            background-color: #1e2229 !important;
+        }
+        html.dark-theme .product-item a.h6,
+        body.dark-theme .product-item a.h6,
+        html.dark-theme .cat-item h6,
+        body.dark-theme .cat-item h6 {
+            color: #ffffff !important;
+        }
+        html.dark-theme .product-desc,
+        body.dark-theme .product-desc {
+            color: #9aa0a6 !important;
+        }
+        html.dark-theme #gridViewBtn.active,
+        html.dark-theme #listViewBtn.active,
+        body.dark-theme #gridViewBtn.active,
+        body.dark-theme #listViewBtn.active {
+            background-color: #FFD333 !important;
+            color: #111111 !important;
+            border-color: #FFD333 !important;
+        }
+        html.dark-theme .cat-item:hover,
+        body.dark-theme .cat-item:hover {
+            background-color: #272c34 !important;
+        }
+
+        /* Breadcrumb */
+        html.dark-theme .breadcrumb,
+        body.dark-theme .breadcrumb {
+            background-color: #1e2229 !important;
+            border: 1px solid #2d3238 !important;
+        }
+        html.dark-theme .breadcrumb a,
+        body.dark-theme .breadcrumb a {
+            color: #FFD333 !important;
+        }
+        html.dark-theme .breadcrumb span.active,
+        body.dark-theme .breadcrumb span.active {
+            color: #9aa0a6 !important;
+        }
+
+        /* Qutular və Formalar */
+        html.dark-theme .contact-form,
+        body.dark-theme .contact-form,
+        html.dark-theme .p-30,
+        body.dark-theme .p-30,
+        html.dark-theme .p-4,
+        body.dark-theme .p-4,
+        html.dark-theme .card,
+        body.dark-theme .card {
+            border-color: #2d3238 !important;
+        }
+
+        html.dark-theme .form-control,
+        body.dark-theme .form-control,
+        html.dark-theme .custom-select,
+        body.dark-theme .custom-select {
+            background-color: #272c34 !important;
+            color: #ffffff !important;
+            border: 1px solid #3d464d !important;
+        }
+        html.dark-theme .form-control:focus,
+        body.dark-theme .form-control:focus,
+        html.dark-theme .custom-select:focus,
+        body.dark-theme .custom-select:focus {
+            background-color: #272c34 !important;
+            color: #ffffff !important;
+            border-color: #FFD333 !important;
+            box-shadow: 0 0 5px rgba(255, 211, 51, 0.4) !important;
+        }
+        html.dark-theme .form-control::placeholder,
+        body.dark-theme .form-control::placeholder {
+            color: #888888 !important;
+        }
+        html.dark-theme .input-group-text,
+        body.dark-theme .input-group-text {
+            background-color: #272c34 !important;
+            border-color: #3d464d !important;
+            color: #FFD333 !important;
+        }
+        html.dark-theme label,
+        body.dark-theme label,
+        html.dark-theme .custom-control-label,
+        body.dark-theme .custom-control-label {
+            color: #e0e0e0 !important;
+        }
+
+        /* Açılan menyular (Dropdown) */
+        html.dark-theme .dropdown-menu,
+        body.dark-theme .dropdown-menu {
+            background-color: #1e2229 !important;
+            border: 1px solid #2d3238 !important;
+        }
+        html.dark-theme .dropdown-item,
+        body.dark-theme .dropdown-item {
+            color: #e0e0e0 !important;
+        }
+        html.dark-theme .dropdown-item:hover,
+        body.dark-theme .dropdown-item:hover {
+            background-color: #FFD333 !important;
+            color: #000000 !important;
+        }
+
+        /* Cədvəllər (Cart) */
+        html.dark-theme .table,
+        body.dark-theme .table,
+        html.dark-theme .table-light,
+        body.dark-theme .table-light {
+            background-color: #1e2229 !important;
+            color: #ffffff !important;
+        }
+        html.dark-theme .table td,
+        body.dark-theme .table td,
+        html.dark-theme .table th,
+        body.dark-theme .table th {
+            border-color: #2d3238 !important;
+            color: #ffffff !important;
+        }
+
+        /* Düymələr */
+        html.dark-theme .btn-light,
+        body.dark-theme .btn-light {
+            background-color: #272c34 !important;
+            color: #ffffff !important;
+            border-color: #3d464d !important;
+        }
+        html.dark-theme .btn-light:hover,
+        body.dark-theme .btn-light:hover {
+            background-color: #FFD333 !important;
+            color: #000000 !important;
+            border-color: #FFD333 !important;
+        }
+        html.dark-theme .btn-outline-dark,
+        body.dark-theme .btn-outline-dark {
+            color: #ffffff !important;
+            border-color: #555555 !important;
+        }
+        html.dark-theme .btn-outline-dark:hover,
+        body.dark-theme .btn-outline-dark:hover {
+            background-color: #FFD333 !important;
+            color: #000000 !important;
+            border-color: #FFD333 !important;
+        }
+
+        /* Tablar və Siyahı elementləri */
+        html.dark-theme .nav-tabs,
+        body.dark-theme .nav-tabs {
+            border-bottom-color: #2d3238 !important;
+        }
+        html.dark-theme .nav-tabs .nav-link,
+        body.dark-theme .nav-tabs .nav-link {
+            color: #9aa0a6 !important;
+        }
+        html.dark-theme .nav-tabs .nav-link.active,
+        body.dark-theme .nav-tabs .nav-link.active {
+            background-color: #272c34 !important;
+            color: #FFD333 !important;
+            border-color: #2d3238 #2d3238 #272c34 !important;
+        }
+        html.dark-theme .list-group-item,
+        body.dark-theme .list-group-item {
+            background-color: #1e2229 !important;
+            color: #e0e0e0 !important;
+            border-color: #2d3238 !important;
+        }
+
+        /* Sərhədlər */
+        html.dark-theme .border,
+        body.dark-theme .border,
+        html.dark-theme .border-top,
+        body.dark-theme .border-top,
+        html.dark-theme .border-bottom,
+        body.dark-theme .border-bottom {
+            border-color: #2d3238 !important;
+        }
+
+        /* Gündüz/Gecə düyməsi */
+        .btn-theme-toggle {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 38px !important;
+            height: 31px !important;
+            padding: 0 !important;
+            cursor: pointer !important;
+        }
+        .btn-theme-toggle i {
+            font-size: 15px !important;
+            pointer-events: none !important;
+            transition: transform 0.2s ease !important;
+        }
+
+        /* Keçid animasiyası */
+        body, .bg-light, .bg-secondary, .product-item, .cat-item, .breadcrumb, .form-control {
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+    </style>
+
+    <!-- Gecə / Gündüz Rejimi JS -->
+    <script>
+        (function() {
+            var STORAGE_KEY = 'site_theme';
+
+            function applyTheme(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark-theme');
+                    if (document.body) document.body.classList.add('dark-theme');
+                } else {
+                    document.documentElement.classList.remove('dark-theme');
+                    if (document.body) document.body.classList.remove('dark-theme');
+                }
+                updateIcons(isDark);
+            }
+
+            function updateIcons(isDark) {
+                var icons = document.querySelectorAll('#themeIcon, .btn-theme-toggle i');
+                for (var i = 0; i < icons.length; i++) {
+                    icons[i].className = isDark ? 'fas fa-sun text-warning' : 'fas fa-moon';
+                }
+            }
+
+            window.toggleTheme = function() {
+                var isDark = document.documentElement.classList.contains('dark-theme');
+                var newIsDark = !isDark;
+                applyTheme(newIsDark);
+                try {
+                    localStorage.setItem(STORAGE_KEY, newIsDark ? 'dark' : 'light');
+                    localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+                } catch(e) {}
+            };
+
+            // Yadda saxlanmış rejimi dərhal tətbiq et (səhifə açılan andan)
+            try {
+                var saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('theme');
+                if (saved === 'dark') {
+                    document.documentElement.classList.add('dark-theme');
+                }
+            } catch(e) {}
+
+            function onDomReady() {
+                var isDark = document.documentElement.classList.contains('dark-theme');
+                if (isDark && document.body) {
+                    document.body.classList.add('dark-theme');
+                }
+                updateIcons(isDark);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', onDomReady);
+            } else {
+                onDomReady();
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <div class="row bg-secondary py-1 px-xl-5">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="d-inline-flex align-items-center h-100">
+                    <a class="text-body mr-3" href="{% url 'shop:home' %}">About</a>
+                    <a class="text-body mr-3" href="{% url 'customer:contact' %}">Contact</a>
+                    <a class="text-body mr-3" href="{% url 'shop:home' %}">Help</a>
+                    <a class="text-body mr-3" href="{% url 'shop:home' %}">FAQs</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <div class="d-inline-flex align-items-center">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                            {% if user.is_authenticated %}{{ user.username }}{% else %}{% trans "My Account" %}{% endif %}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% if user.is_authenticated %}
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item" type="submit">{% trans "Sign out" %}</button>
+                                </form>
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'login' %}">{% trans "Sign in" %}</a>
+                                <a class="dropdown-item" href="{% url 'register' %}">{% trans "Sign up" %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="btn-group mx-2">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                            {{ request.session.currency|default:"USD" }}
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'set_currency' %}?currency=USD">USD</a>
+                            <a class="dropdown-item" href="{% url 'set_currency' %}?currency=EUR">EUR</a>
+                            <a class="dropdown-item" href="{% url 'set_currency' %}?currency=GBP">GBP</a>
+                            <a class="dropdown-item" href="{% url 'set_currency' %}?currency=CAD">CAD</a>
+                        </div>
+                    </div>
+                    <div class="btn-group mx-2">
+                        <button type="button" class="btn btn-sm btn-light btn-theme-toggle" id="themeToggle"
+                                onclick="toggleTheme()"
+                                title="{% trans 'Light / Dark mode' %}" aria-label="{% trans 'Light / Dark mode' %}">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                    </div>
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_current_language as CURRENT_LANG %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ CURRENT_LANG|upper }}</button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            {% for code, name in LANGUAGES %}
+                                {% if code != CURRENT_LANG %}
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <input type="hidden" name="language" value="{{ code }}">
+                                    <button class="dropdown-item" type="submit">{{ code|upper }}</button>
+                                </form>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="d-inline-flex align-items-center d-block d-lg-none">
+                    <a href="#" class="btn px-0 ml-2">
+                        <i class="fas fa-heart text-dark"></i>
+                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                    </a>
+                    <a href="{% url 'cart' %}" class="btn px-0 ml-2">
+                        <i class="fas fa-shopping-cart text-dark"></i>
+                        <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div class="col-lg-4">
+                <a href="{% url 'shop:home' %}" class="text-decoration-none">
+                    <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                    <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                </a>
+            </div>
+            <div class="col-lg-4 col-6 text-left">
+                <form action="{% url 'shop:product-list' %}" method="get">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search for products" value="{{ request.GET.q }}">
+                        <div class="input-group-append">
+                            <button class="input-group-text bg-transparent text-primary border-0" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 col-6 text-right">
+                <p class="m-0">Customer Service</p>
+                <h5 class="m-0">+012 345 6789</h5>
+            </div>
+        </div>
+    </div>
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-dark mb-30">
+        <div class="row px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
+                    <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                    <i class="fa fa-angle-down text-dark"></i>
+                </a>
+                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+                    {% nav_categories %}
+                </nav>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                    <a href="{% url 'shop:home' %}" class="text-decoration-none d-block d-lg-none">
+                        <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
+                        <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="{% url 'shop:home' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+                            <a href="{% url 'shop:product-list' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'product-list' or request.resolver_match.url_name == 'shop' %}active{% endif %}">Shop</a>
+                            <a href="{% url 'shop:product-detail-default' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'product-detail' or request.resolver_match.url_name == 'product-detail-default' %}active{% endif %}">Shop Detail</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
+                                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                    <a href="{% url 'cart' %}" class="dropdown-item">Shopping Cart</a>
+                                    <a href="{% url 'checkout' %}" class="dropdown-item">Checkout</a>
+                                </div>
+                            </div>
+                            <a href="{% url 'customer:contact' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact</a>
+                        </div>
+                        <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
+                            <a href="#" class="btn px-0">
+                                <i class="fas fa-heart text-primary"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                            <a href="{% url 'cart' %}" class="btn px-0 ml-3">
+                                <i class="fas fa-shopping-cart text-primary"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+    {% block main %}{% endblock main %}
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+                <h5 class="text-secondary text-uppercase mb-4">Get In Touch</h5>
+                <p class="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ contact_info.address|default:'123 Street, New York, USA' }}</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ contact_info.email|default:'info@example.com' }}</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ contact_info.phone|default:'+012 345 67890' }}</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Quick Shop</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="{% url 'shop:home' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="{% url 'shop:product-list' %}"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="{% url 'shop:product-detail-default' %}"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="{% url 'cart' %}"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="{% url 'checkout' %}"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="{% url 'customer:contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-secondary mb-2" href="{% url 'shop:home' %}"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-secondary mb-2" href="{% url 'shop:product-list' %}"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                            <a class="text-secondary mb-2" href="{% url 'shop:product-detail-default' %}"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
+                            <a class="text-secondary mb-2" href="{% url 'cart' %}"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
+                            <a class="text-secondary mb-2" href="{% url 'checkout' %}"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
+                            <a class="text-secondary" href="{% url 'customer:contact' %}"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
+                        <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
+                        <form action="">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Your Email Address">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary">Sign Up</button>
+                                </div>
+                            </div>
+                        </form>
+                        <h6 class="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
+                        <div class="d-flex">
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-primary btn-square mr-2" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top mx-xl-5 py-4" style="border-color: rgba(256, 256, 256, .1) !important;">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-secondary">
+                    &copy; <a class="text-primary" href="{% url 'shop:home' %}">MultiShop</a>. All Rights Reserved.
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="{% static 'img/payments.png' %}" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

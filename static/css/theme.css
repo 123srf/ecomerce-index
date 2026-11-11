@@ -1,0 +1,359 @@
+/* ==========================================================================
+   MultiShop — Light / Dark (gündüz / gecə) tema
+   Rənglər CSS dəyişənləri (CSS Variables) ilə idarə olunur.
+   Gecə rejimi üçün <html> elementinə "dark-theme" klası əlavə edilir.
+   ========================================================================== */
+
+:root {
+    /* Səthlər */
+    --ms-bg: #F5F5F5;
+    --ms-surface: #FFFFFF;
+    --ms-surface-2: #F5F5F5;
+    --ms-surface-invert: #3D464D;
+
+    /* Mətnlər */
+    --ms-text: #6C757D;
+    --ms-heading: #3D464D;
+    --ms-muted: #6C757D;
+
+    /* Sərhəd / kölgə */
+    --ms-border: #DEE2E6;
+    --ms-shadow: rgba(0, 0, 0, 0.06);
+
+    /* Form elementləri */
+    --ms-input-bg: #FFFFFF;
+    --ms-input-text: #495057;
+    --ms-input-border: #CED4DA;
+
+    /* Brend rəngi */
+    --ms-primary: #FFD333;
+    --ms-primary-contrast: #212529;
+}
+
+html.dark-theme {
+    --ms-bg: #12171B;
+    --ms-surface: #1B2127;
+    --ms-surface-2: #232B32;
+    --ms-surface-invert: #0E1215;
+
+    --ms-text: #C7CDD2;
+    --ms-heading: #FFFFFF;
+    --ms-muted: #9AA2A9;
+
+    --ms-border: #2D3740;
+    --ms-shadow: rgba(0, 0, 0, 0.5);
+
+    --ms-input-bg: #232B32;
+    --ms-input-text: #FFFFFF;
+    --ms-input-border: #3D464D;
+
+    color-scheme: dark;
+}
+
+/* --- Baza və Gövdə --- */
+body {
+    background-color: var(--ms-bg);
+    color: var(--ms-text);
+}
+
+html.dark-theme,
+html.dark-theme body {
+    background-color: var(--ms-bg) !important;
+    color: var(--ms-text) !important;
+}
+
+/* --- Başlıqlar --- */
+html.dark-theme h1,
+html.dark-theme h2,
+html.dark-theme h3,
+html.dark-theme h4,
+html.dark-theme h5,
+html.dark-theme h6 {
+    color: var(--ms-heading) !important;
+}
+
+/* --- Bölmə başlıqları (Section Titles) --- */
+html.dark-theme .section-title::after {
+    border-top-color: var(--ms-border) !important;
+}
+
+html.dark-theme .section-title span {
+    background-color: var(--ms-bg) !important;
+    color: var(--ms-heading) !important;
+}
+
+/* --- Səthlər (Backgrounds) --- */
+html.dark-theme .bg-light {
+    background-color: var(--ms-surface) !important;
+}
+
+html.dark-theme .bg-white {
+    background-color: var(--ms-surface) !important;
+}
+
+html.dark-theme .bg-secondary {
+    background-color: var(--ms-surface-2) !important;
+}
+
+html.dark-theme .bg-dark {
+    background-color: var(--ms-surface-invert) !important;
+}
+
+/* --- Mətn rəngləri --- */
+html.dark-theme .text-dark {
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme a.text-dark:hover,
+html.dark-theme a.text-dark:focus {
+    color: var(--ms-primary) !important;
+}
+
+html.dark-theme .text-body,
+html.dark-theme .text-muted {
+    color: var(--ms-muted) !important;
+}
+
+html.dark-theme .text-secondary {
+    color: var(--ms-text) !important;
+}
+
+html.dark-theme .bg-primary.text-dark,
+html.dark-theme .bg-primary .text-dark {
+    color: var(--ms-primary-contrast) !important;
+}
+
+/* --- Komponentlər: Məhsul kartları və kateqoriyalar --- */
+html.dark-theme .product-item {
+    background-color: var(--ms-surface) !important;
+    border: 1px solid var(--ms-border);
+}
+
+html.dark-theme .product-item .text-center {
+    background-color: var(--ms-surface) !important;
+}
+
+html.dark-theme .product-item a.h6 {
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .product-item a.h6:hover {
+    color: var(--ms-primary) !important;
+}
+
+html.dark-theme .cat-item {
+    background-color: var(--ms-surface) !important;
+    border: 1px solid var(--ms-border);
+}
+
+html.dark-theme .cat-item h6 {
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .cat-item:hover {
+    background-color: var(--ms-surface-2) !important;
+}
+
+/* --- Breadcrumb --- */
+html.dark-theme .breadcrumb {
+    background-color: var(--ms-surface) !important;
+    border: 1px solid var(--ms-border);
+}
+
+html.dark-theme .breadcrumb a {
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .breadcrumb span.active {
+    color: var(--ms-muted) !important;
+}
+
+/* --- Kartlar, Qutular və Formalar --- */
+html.dark-theme .card,
+html.dark-theme .contact-form,
+html.dark-theme .bg-light.p-30,
+html.dark-theme .bg-light.p-4 {
+    background-color: var(--ms-surface) !important;
+    border: 1px solid var(--ms-border) !important;
+}
+
+html.dark-theme .form-control,
+html.dark-theme .custom-select {
+    color: var(--ms-input-text) !important;
+    background-color: var(--ms-input-bg) !important;
+    border-color: var(--ms-input-border) !important;
+}
+
+html.dark-theme .form-control:focus,
+html.dark-theme .custom-select:focus {
+    color: var(--ms-input-text) !important;
+    background-color: var(--ms-input-bg) !important;
+    border-color: var(--ms-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 211, 51, 0.25) !important;
+}
+
+html.dark-theme .form-control::placeholder {
+    color: var(--ms-muted) !important;
+}
+
+html.dark-theme .input-group-text {
+    color: var(--ms-text) !important;
+    background-color: var(--ms-surface-2) !important;
+    border-color: var(--ms-input-border) !important;
+}
+
+html.dark-theme label,
+html.dark-theme .custom-control-label {
+    color: var(--ms-heading) !important;
+}
+
+/* --- Cədvəllər (Cart / Səbət) --- */
+html.dark-theme .table {
+    color: var(--ms-text) !important;
+    background-color: var(--ms-surface) !important;
+}
+
+html.dark-theme .table td,
+html.dark-theme .table th {
+    border-color: var(--ms-border) !important;
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .table-light {
+    background-color: var(--ms-surface) !important;
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .table-hover tbody tr:hover {
+    background-color: var(--ms-surface-2) !important;
+}
+
+/* --- Tablar və List-group --- */
+html.dark-theme .nav-tabs {
+    border-bottom-color: var(--ms-border) !important;
+}
+
+html.dark-theme .nav-tabs .nav-link {
+    color: var(--ms-muted) !important;
+}
+
+html.dark-theme .nav-tabs .nav-link.active {
+    background-color: var(--ms-surface-2) !important;
+    color: var(--ms-heading) !important;
+    border-color: var(--ms-border) var(--ms-border) var(--ms-surface-2) !important;
+}
+
+html.dark-theme .list-group-item {
+    background-color: var(--ms-surface) !important;
+    color: var(--ms-text) !important;
+    border-color: var(--ms-border) !important;
+}
+
+/* --- Açılan menyular (Dropdowns) --- */
+html.dark-theme .dropdown-menu {
+    background-color: var(--ms-surface) !important;
+    border-color: var(--ms-border) !important;
+}
+
+html.dark-theme .dropdown-item {
+    color: var(--ms-heading) !important;
+}
+
+html.dark-theme .dropdown-item:hover,
+html.dark-theme .dropdown-item:focus {
+    background-color: var(--ms-surface-2) !important;
+    color: var(--ms-primary) !important;
+}
+
+html.dark-theme .dropdown-divider {
+    border-color: var(--ms-border) !important;
+}
+
+/* --- Düymələr --- */
+html.dark-theme .btn-light {
+    color: var(--ms-heading) !important;
+    background-color: var(--ms-surface-2) !important;
+    border-color: var(--ms-border) !important;
+}
+
+html.dark-theme .btn-light:hover,
+html.dark-theme .btn-light:focus {
+    color: var(--ms-primary-contrast) !important;
+    background-color: var(--ms-primary) !important;
+    border-color: var(--ms-primary) !important;
+}
+
+html.dark-theme .btn-outline-dark {
+    color: var(--ms-heading) !important;
+    border-color: var(--ms-border) !important;
+}
+
+html.dark-theme .btn-outline-dark:hover,
+html.dark-theme .btn-outline-dark:focus {
+    color: var(--ms-primary-contrast) !important;
+    background-color: var(--ms-primary) !important;
+    border-color: var(--ms-primary) !important;
+}
+
+/* --- Sərhədlər (Borders) --- */
+html.dark-theme .border,
+html.dark-theme .border-top,
+html.dark-theme .border-bottom,
+html.dark-theme .border-left,
+html.dark-theme .border-right {
+    border-color: var(--ms-border) !important;
+}
+
+/* --- Rejim dəyişmə düyməsi (Toggle Button) --- */
+.btn-theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 31px;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-theme-toggle i {
+    font-size: 14px;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.btn-theme-toggle:hover i {
+    transform: rotate(20deg);
+}
+
+/* --- İnteraktiv rəy ulduzları --- */
+.star-rating i[data-value] {
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+    transition: transform 0.12s ease;
+}
+
+.star-rating i[data-value]:hover {
+    transform: scale(1.18);
+}
+
+.rating-stars .fa-star,
+.rating-stars .fa-star-half-alt {
+    line-height: 1;
+}
+
+/* --- Yumşaq keçid animasiyası --- */
+body,
+.bg-light,
+.bg-secondary,
+.bg-white,
+.cat-item,
+.product-item,
+.card,
+.dropdown-menu,
+.form-control,
+.breadcrumb {
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}

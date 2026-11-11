@@ -1,0 +1,307 @@
+{% extends 'layout.html' %}
+{% load static i18n socialaccount %}
+
+{% block main %}
+<style>
+    /* Bütün ekranı sarı etmək üçün base şablonun stilini bu səhifədə əzirik */
+    body {
+        background-color: #FFD333 !important;
+        overflow-x: hidden;
+    }
+    
+    /* Breadcrumb və digər base elementləri gizlədirik */
+    .breadcrumb, footer, .container-fluid.bg-dark.mb-30, .container-fluid.bg-secondary.py-1 {
+        display: none !important;
+    }
+    
+    .auth-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 20px;
+    }
+    
+    /* Fonda dairələr */
+    .circle-bg {
+        position: fixed;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .circle-1 {
+        width: 600px;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.22);
+        top: -200px;
+        left: -200px;
+    }
+    .circle-2 {
+        width: 400px;
+        height: 400px;
+        background: rgba(61, 70, 77, 0.1);
+        bottom: -100px;
+        right: -100px;
+    }
+    
+    .auth-card {
+        width: 100%;
+        max-width: 400px;
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 26px 28px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .auth-header {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    
+    .auth-icon-circle {
+        width: 54px;
+        height: 54px;
+        background: #FFD333;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        font-size: 20px;
+        color: #1F2428;
+    }
+    
+    .auth-title {
+        color: #1F2428;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    
+    .auth-subtitle {
+        color: #3D464D;
+        font-size: 14px;
+        margin-bottom: 0;
+    }
+    
+    /* Segmented Toggle */
+    .auth-toggle {
+        display: flex;
+        background: #EDEEF0;
+        border-radius: 10px;
+        padding: 4px;
+        margin-bottom: 24px;
+    }
+    .auth-toggle-item {
+        flex: 1;
+        text-align: center;
+        padding: 8px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #1F2428;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .auth-toggle-item.active {
+        background: #FFD333;
+    }
+    
+    .auth-field-group {
+        margin-bottom: 16px;
+        position: relative;
+    }
+    
+    .auth-field-icon {
+        position: absolute;
+        left: 14px;
+        top: 22px;
+        transform: translateY(-50%);
+        color: #5A636A;
+        font-size: 14px;
+        z-index: 2;
+    }
+    
+    .auth-field .form-control {
+        height: 44px;
+        padding-left: 40px;
+        padding-right: 40px;
+        border: 1px solid #9AA2A9;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #1F2428;
+    }
+    .auth-field .form-control::placeholder {
+        color: #5A636A;
+    }
+    .auth-field .form-control:focus {
+        border-color: #1F2428;
+        box-shadow: none;
+    }
+    
+    .auth-field-toggle {
+        position: absolute;
+        right: 12px;
+        top: 22px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: 0;
+        color: #5A636A;
+        cursor: pointer;
+        padding: 0;
+        z-index: 2;
+    }
+    
+    .auth-errors {
+        color: #c0392b;
+        font-size: 12px;
+        margin-top: 4px;
+        list-style: none;
+        padding: 0;
+    }
+    
+    .auth-submit {
+        width: 100%;
+        height: 46px;
+        background: #FFD333;
+        border: 0;
+        border-radius: 10px;
+        color: #1F2428;
+        font-weight: 700;
+        margin-bottom: 16px;
+        transition: background 0.2s;
+    }
+    .auth-submit:hover {
+        background: #f5c71f;
+    }
+    
+    .auth-divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #5A636A;
+        font-size: 12px;
+        margin-bottom: 16px;
+    }
+    .auth-divider::before, .auth-divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #9AA2A9;
+    }
+    .auth-divider:not(:empty)::before { margin-right: 10px; }
+    .auth-divider:not(:empty)::after { margin-left: 10px; }
+    
+    .google-btn {
+        width: 100%;
+        height: 46px;
+        background: #FFFFFF;
+        border: 1px solid #9AA2A9;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1F2428;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        margin-bottom: 20px;
+    }
+    .google-btn img {
+        width: 18px;
+        margin-right: 10px;
+    }
+    
+    .auth-link {
+        color: #1F2428;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+    
+    .auth-footer {
+        text-align: center;
+        font-size: 14px;
+        color: #3D464D;
+    }
+</style>
+
+<div class="auth-wrapper">
+    <div class="circle-bg circle-1"></div>
+    <div class="circle-bg circle-2"></div>
+    
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="auth-icon-circle"><i class="fas fa-user-plus"></i></span>
+            <h3 class="auth-title">{% trans "Hesab yaradın" %}</h3>
+            <p class="auth-subtitle">{% trans "Alış-verişə başlamaq üçün qoşulun" %}</p>
+        </div>
+        
+        <div class="auth-toggle">
+            <a href="{% url 'login' %}" class="auth-toggle-item">{% trans "Giriş" %}</a>
+            <a href="{% url 'register' %}" class="auth-toggle-item active">{% trans "Qeydiyyat" %}</a>
+        </div>
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger p-2 mb-3" style="font-size: 13px;">
+                    {% for error in form.non_field_errors %}
+                        <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="auth-field-group">
+                    <div class="auth-field">
+                        <span class="auth-field-icon">
+                            {% if field.name == 'username' %}<i class="fas fa-user"></i>
+                            {% elif field.name == 'email' %}<i class="far fa-envelope"></i>
+                            {% else %}<i class="fas fa-lock"></i>{% endif %}
+                        </span>
+                        {{ field }}
+                        {% if 'password' in field.name %}
+                            <button type="button" class="auth-field-toggle" data-toggle-password="{{ field.id_for_label }}">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+                    {% if field.errors %}
+                        <ul class="auth-errors">
+                            {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button class="auth-submit" type="submit">{% trans "Qeydiyyatdan keç" %}</button>
+        </form>
+        
+        <div class="auth-divider">{% trans "və ya" %}</div>
+        
+        <a href="{% provider_login_url 'google' process='signup' %}" class="google-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+            {% trans "Google ilə davam et" %}
+        </a>
+        
+        <p class="auth-footer">
+            {% trans "Artıq hesabınız var?" %}
+            <a href="{% url 'login' %}" class="auth-link ml-1">{% trans "Giriş" %}</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('[data-toggle-password]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var input = document.getElementById(button.getAttribute('data-toggle-password'));
+            if (!input) return;
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            button.querySelector('i').className = show ? 'far fa-eye-slash' : 'far fa-eye';
+        });
+    });
+</script>
+{% endblock main %}
